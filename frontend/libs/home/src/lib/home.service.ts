@@ -9,4 +9,8 @@ export class HomeService {
   getTags(): Observable<{ tags: string[] }> {
     return this.apiService.get('/tags');
   }
+
+  addTag(tag: string): Observable<void> {
+    return this.apiService.post<void, { tag: string }>('/tags', {tag});
+  }
 }

@@ -1,41 +1,52 @@
 import { Injectable } from '@angular/core';
-import { ComponentStore, OnStateInit, tapResponse } from '@ngrx/component-store';
+import { ComponentStore } from '@ngrx/component-store';
 import { pipe } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { tapResponse } from '@ngrx/operators';
+import { concatMap, switchMap, withLatestFrom } from 'rxjs/operators';
 import { HomeService } from './home.service';
 
 export interface HomeState {
   tags: string[];
 }
 
-@Injectable()
-export class HomeStoreService extends ComponentStore<HomeState> implements OnStateInit {
+@Injectable({ providedIn: 'root' })
+export class HomeStoreService extends ComponentStore<HomeState> {
+
   constructor(private readonly homeService: HomeService) {
     super({ tags: [] });
-  }
-
-  ngrxOnStateInit() {
-    this.getTags();
   }
 
   // SELECTORS
   tags$ = this.select((store) => store.tags);
 
   // EFFECTS
-  readonly getTags = this.effect<void>(
+  readonly loadTags = this.effect<void>(
     pipe(
       switchMap(() =>
         this.homeService.getTags().pipe(
-          tapResponse(
-            (response) => {
-              this.patchState({ tags: response.tags });
-            },
-            (error) => {
-              console.error('error getting tags: ', error);
+          tapResponse({
+              next: (response) =>
+                this.patchState({ tags: response.tags }),
+              error: (error) =>
+                console.error('Error occurred while loading tags: ', error),
             },
           ),
         ),
       ),
     ),
   );
+
+  addTag = this.effect<string>(
+    pipe(
+      withLatestFrom(this.tags$),
+      concatMap(([newTag, tags_]) =>
+        this.homeService.addTag(newTag).pipe(
+          tapResponse({
+            next: () => {
+              this.patchState({ tags: [...tags_, newTag] });
+            },
+            error: (error) => console.error('Error occurred while adding a tag: ', error),
+          })),
+      )));
+
 }

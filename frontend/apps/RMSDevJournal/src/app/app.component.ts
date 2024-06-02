@@ -8,6 +8,7 @@ import { NavbarComponent } from './layout/navbar/navbar.component';
 import { WebSocketService } from './data-access/src';
 import { ArticlesListStore } from '@infordevjournal/articles/data-access';
 import { Article } from '@infordevjournal/core/api-types';
+import { HomeStoreService } from '@infordevjournal/home/src/lib/home.store';
 
 @Component({
   selector: 'cdt-root',
@@ -22,6 +23,7 @@ export class AppComponent implements OnInit {
   private readonly authStore = inject(AuthStore);
   private readonly webSocketService = inject(WebSocketService);
   private readonly articlesListStore = inject(ArticlesListStore);
+  private readonly homeStore = inject(HomeStoreService);
 
   $user = this.authStore.user;
   $isLoggedIn = this.authStore.loggedIn;
@@ -54,6 +56,7 @@ export class AppComponent implements OnInit {
         return;
       }
       console.log('Received tag:', tag);
+      this.homeStore.addTag(tag);
     });
 
     // comments

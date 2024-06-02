@@ -4,7 +4,6 @@ import { AsyncPipe, NgClass } from '@angular/common';
 import { TagsListComponent } from './tags-list/tags-list.component';
 import { ArticleListComponent } from '@infordevjournal/articles/feature-articles-list/src';
 import { HomeStoreService } from './home.store';
-import { provideComponentStore } from '@ngrx/component-store';
 import { AuthStore } from '@infordevjournal/auth/data-access';
 
 @Component({
@@ -13,7 +12,6 @@ import { AuthStore } from '@infordevjournal/auth/data-access';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   imports: [AsyncPipe, NgClass, TagsListComponent, ArticleListComponent],
-  providers: [provideComponentStore(HomeStoreService)],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
@@ -26,6 +24,7 @@ export class HomeComponent {
 
   constructor() {
     this.articlesListStore.loadArticles(this.$listConfig);
+    this.homeStore.loadTags();
   }
 
   readonly loadArticlesOnLogin = effect(() => {
