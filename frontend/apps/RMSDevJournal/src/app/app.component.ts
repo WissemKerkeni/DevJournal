@@ -5,7 +5,7 @@ import { AuthStore, LocalStorageJwtService } from '@infordevjournal/auth/data-ac
 import { filter, take } from 'rxjs/operators';
 import { FooterComponent } from './layout/footer/footer.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
-import { WebSocketService } from './data-access/src';
+import { NotificationsStore, WebSocketService } from './data-access/src';
 import { ArticlesListStore } from '@infordevjournal/articles/data-access';
 import { Article } from '@infordevjournal/core/api-types';
 import { HomeStoreService } from '@infordevjournal/home/src/lib/home.store';
@@ -23,10 +23,12 @@ export class AppComponent implements OnInit {
   private readonly authStore = inject(AuthStore);
   private readonly webSocketService = inject(WebSocketService);
   private readonly articlesListStore = inject(ArticlesListStore);
-  private readonly homeStore = inject(HomeStoreService);
+  private readonly homeStore = inject(HomeStoreService)
+  private readonly notificationsStore = inject(NotificationsStore);
 
   $user = this.authStore.user;
   $isLoggedIn = this.authStore.loggedIn;
+  $notifications = this.notificationsStore.notifications
 
   ngOnInit() {
     this.localStorageJwtService

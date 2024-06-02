@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { pipe } from 'rxjs';
 import { tapResponse } from '@ngrx/operators';
 import { concatMap, switchMap, withLatestFrom } from 'rxjs/operators';
 import { HomeService } from './home.service';
+import { NotificationsStore } from '@default/data-access/src';
 
 export interface HomeState {
   tags: string[];
@@ -11,6 +12,7 @@ export interface HomeState {
 
 @Injectable({ providedIn: 'root' })
 export class HomeStoreService extends ComponentStore<HomeState> {
+  private readonly notificationsStore = inject(NotificationsStore);
 
   constructor(private readonly homeService: HomeService) {
     super({ tags: [] });
@@ -44,6 +46,7 @@ export class HomeStoreService extends ComponentStore<HomeState> {
           tapResponse({
             next: () => {
               this.patchState({ tags: [...tags_, newTag] });
+              this.notificationsStore.addNotification({ tag: newTag });
             },
             error: (error) => console.error('Error occurred while adding a tag: ', error),
           })),

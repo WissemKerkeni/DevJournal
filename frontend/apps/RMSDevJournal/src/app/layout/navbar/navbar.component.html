@@ -47,24 +47,43 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a (click)="toggleNotifications()" data-e2e-id="loggedin-user" routerLinkActive="active" class="nav-link dropdown-toggle"  id="notificationDropdown" 
+          <a (click)="toggleNotifications()" data-e2e-id="loggedin-user" routerLinkActive="active" class="nav-link dropdown-toggle"  id="notificationDropdown"
           role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="ion-android-notifications"></i> Notification
           </a>
           <div class="dropdown-menu dropdown-menu-right " id="notifList"  aria-labelledby="notificationDropdown">
+
             <h6 class="dropdown-header">New Article</h6>
-            // received article here 
-            <!-- <a class="dropdown-item" href="#">Enim illum ut similique quos...</a> -->
-            <!-- <a class="dropdown-item" href="#">Voluptatum sit dolorem dolor...</a>  -->
-            <div class="dropdown-divider"></div>        
+            @for (article of notifications().articles; track article.slug) {
+              <h6>
+                <a class="dropdown-item" [routerLink]="['/article', article.slug]">{{ article.title }}</a>
+              </h6>
+            } @empty {
+              <h6>No articles are here... yet.</h6>
+            }
+            <div class="dropdown-divider"></div>
+
             <h6 class="dropdown-header">New Tag</h6>
-            // received tag here
-            <div class="dropdown-divider"></div>     
+            @for (tag of notifications().tags; track tag) {
+              <h6>
+                <a class="dropdown-item">{{ tag }}</a>
+              </h6>
+            } @empty {
+              <h6>No tags are here... yet.</h6>
+            }
+            <div class="dropdown-divider"></div>
+
             <h6 class="dropdown-header">like/unlike article</h6>
-            // received like/unlike here
+            @for (likeUnlikeArticle of notifications().likeUnlike; track likeUnlikeArticle.slug) {
+              <h6>
+                <a class="dropdown-item" [routerLink]="['/article', likeUnlikeArticle.slug]">{{ likeUnlikeArticle.title }}</a>
+              </h6>
+            } @empty {
+              <h6>No like/unlike article are here... yet.</h6>
+            }
           </div>
         </li>
-        
+
 
         <!-- <li class="nav-item" [ngClass]="{ 'open': isNotificationsOpen }" (click)="toggleNotifications()">
           <a class="nav-link" href="#" (click)="$event.preventDefault()">
@@ -78,7 +97,7 @@
         </li> -->
 
 
-        
+
 
 
 

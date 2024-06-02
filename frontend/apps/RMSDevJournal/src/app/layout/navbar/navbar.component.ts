@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { User } from '@infordevjournal/core/api-types';
+import { Notifications, User } from '@infordevjournal/core/api-types';
 
 @Component({
   selector: 'cdt-navbar',
@@ -11,13 +11,13 @@ import { User } from '@infordevjournal/core/api-types';
 })
 export class NavbarComponent {
   user = input.required<User>();
-  isLoggedIn = input.required<boolean>();
-  
+  isLoggedIn = input.required<boolean>()
+  notifications = input.required<Notifications>();
+
 
   isNotificationsOpen = false;
 
   toggleNotifications() {
-
     const element = document.getElementById('notifList');
     if (element) {
       element.style.display = this.isNotificationsOpen ? 'none' : 'block';

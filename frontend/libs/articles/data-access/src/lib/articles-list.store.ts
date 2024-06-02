@@ -13,6 +13,7 @@ import { setLoaded, setLoading, withCallState } from '@infordevjournal/core/data
 import { tapResponse } from '@ngrx/operators';
 import { ActionsService } from './services/actions.service';
 import { Article } from '@infordevjournal/core/api-types';
+import { NotificationsStore } from '@default/data-access/src';
 
 export const ArticlesListStore = signalStore(
   { providedIn: 'root' },
@@ -25,7 +26,11 @@ export const ArticlesListStore = signalStore(
       ),
     ),
   })),
-  withMethods((store, articlesService = inject(ArticlesService), actionsService = inject(ActionsService)) => ({
+  withMethods((
+    store,
+    articlesService = inject(ArticlesService),
+    actionsService = inject(ActionsService),
+    notificationStore = inject(NotificationsStore)) => ({
     loadArticles: rxMethod<ArticlesListConfig>(
       pipe(
         tap(() => setLoading('getArticles')),
@@ -55,6 +60,7 @@ export const ArticlesListStore = signalStore(
                 patchState(store, {
                   articles: addArticle(store.articles(), article),
                 });
+                notificationStore.addNotification({article});
               },
               error: (error) => console.error('Error occurred while adding an article: ', error),
             }),
@@ -100,6 +106,7 @@ export const ArticlesListStore = signalStore(
     ),
     updateArticle: (article: Article) => {
       patchState(store, { articles: replaceArticle(store.articles(), article) });
+      notificationStore.addNotification({likeUnlike: article});
     },
     setListConfig: (listConfig: ArticlesListConfig) => {
       patchState(store, { listConfig });
