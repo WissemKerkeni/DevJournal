@@ -5,7 +5,7 @@ import { AuthStore, LocalStorageJwtService } from '@infordevjournal/auth/data-ac
 import { filter, take } from 'rxjs/operators';
 import { FooterComponent } from './layout/footer/footer.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
-import { WebSocketService } from '@default/data-access/src';
+import { WebSocketService } from './data-access/src';
 import { ArticlesListStore } from '@infordevjournal/articles/data-access';
 import { Article } from '@infordevjournal/core/api-types';
 
@@ -67,6 +67,7 @@ export class AppComponent implements OnInit {
         return;
       }
       console.log('Received like-unlike:', article);
+      this.articlesListStore.updateArticle(article);
     });
 
     this.webSocketService.onEvent('disconnect').subscribe(() => {

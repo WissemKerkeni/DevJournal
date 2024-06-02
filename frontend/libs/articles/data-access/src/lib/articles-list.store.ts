@@ -98,6 +98,9 @@ export const ArticlesListStore = signalStore(
         ),
       ),
     ),
+    updateArticle: (article: Article) => {
+      patchState(store, { articles: replaceArticle(store.articles(), article) });
+    },
     setListConfig: (listConfig: ArticlesListConfig) => {
       patchState(store, { listConfig });
     },
