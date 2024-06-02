@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router } from '@angular/router'
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { ArticleListItemComponent } from './article-list-item/article-list-item.component';
 import { PagerComponent } from '@infordevjournal/ui/components';
 import { ArticlesListStore } from '@infordevjournal/articles/data-access';
@@ -9,7 +10,7 @@ import { ArticlesListStore } from '@infordevjournal/articles/data-access';
   selector: 'cdt-article-list',
   standalone: true,
   templateUrl: './article-list.component.html',
-  imports: [ArticleListItemComponent, PagerComponent, AsyncPipe],
+  imports: [InfiniteScrollDirective, ArticleListItemComponent, PagerComponent, AsyncPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArticleListComponent {
@@ -33,7 +34,11 @@ export class ArticleListComponent {
     this.router.navigate(['/article', slug]);
   }
 
-  setPage(page: number) {
-    this.articlesListStore.setListPage(page);
+  onScroll() {
+    const nextPage = this.$listConfig().currentPage + 1;
+    if (!this.$totalPages().includes(nextPage)) {
+      return;
+    }
+    this.articlesListStore.setListPage(nextPage);
   }
 }

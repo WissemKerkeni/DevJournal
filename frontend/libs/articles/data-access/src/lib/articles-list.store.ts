@@ -38,8 +38,9 @@ export const ArticlesListStore = signalStore(
           articlesService.query(listConfig).pipe(
             tapResponse({
               next: ({ articles, articlesCount }) => {
+                const entities = store.listConfig().loadMore ? [...store.articles().entities, ...articles] : articles;
                 patchState(store, {
-                  articles: { articlesCount: articlesCount, entities: articles },
+                  articles: { articlesCount, entities },
                   ...setLoaded('getArticles'),
                 });
               },
@@ -60,7 +61,7 @@ export const ArticlesListStore = signalStore(
                 patchState(store, {
                   articles: addArticle(store.articles(), article),
                 });
-                notificationStore.addNotification({article});
+                notificationStore.addNotification({ article });
               },
               error: (error) => console.error('Error occurred while adding an article: ', error),
             }),
@@ -106,7 +107,7 @@ export const ArticlesListStore = signalStore(
     ),
     updateArticle: (article: Article) => {
       patchState(store, { articles: replaceArticle(store.articles(), article) });
-      notificationStore.addNotification({likeUnlike: article});
+      notificationStore.addNotification({ likeUnlike: article });
     },
     setListConfig: (listConfig: ArticlesListConfig) => {
       patchState(store, { listConfig });
@@ -119,6 +120,7 @@ export const ArticlesListStore = signalStore(
       const listConfig: ArticlesListConfig = {
         ...store.listConfig(),
         currentPage: page,
+        loadMore: page > 1,
         filters,
       };
       patchState(store, { listConfig });

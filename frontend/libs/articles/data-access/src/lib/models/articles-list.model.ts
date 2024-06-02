@@ -9,6 +9,7 @@ export interface ArticlesListConfig {
   type: ListType;
   currentPage: number;
   filters: Filters;
+  loadMore: boolean;
 }
 
 export interface Filters {
@@ -34,6 +35,7 @@ export const articlesListInitialState: ArticlesListState = {
     filters: {
       limit: 10,
     },
+    loadMore: false,
   },
   articles: {
     entities: [],

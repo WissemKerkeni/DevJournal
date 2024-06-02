@@ -34,16 +34,15 @@ export class HomeComponent {
         debounceTime(300),
         distinctUntilChanged(),
       )
-      .subscribe((searchText) => {
-        const config = {
+      .subscribe((searchText) =>
+        this.articlesListStore.setListConfig({
           ...articlesListInitialState.listConfig,
           filters: {
             ...articlesListInitialState.listConfig.filters,
             title: searchText ?? undefined,
-          },
-        };
-        this.articlesListStore.setListConfig(config);
-      });
+          }
+        }),
+      );
   }
 
   readonly loadArticlesOnLogin = effect(() => {
@@ -52,7 +51,7 @@ export class HomeComponent {
   });
 
   readonly loadArticlesOnListConfigChanged = effect(() => {
-    const isLoggedIn = untracked(() =>  this.authStore.loggedIn());
+    const isLoggedIn = untracked(() => this.authStore.loggedIn());
     if (!isLoggedIn) {
       return;
     }
