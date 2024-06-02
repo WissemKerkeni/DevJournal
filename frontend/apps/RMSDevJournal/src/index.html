@@ -13,36 +13,6 @@
   <link
     href="//fonts.googleapis.com/css?family=Titillium+Web:700|Source+Serif+Pro:400,700|Merriweather+Sans:400,700|Source+Sans+Pro:400,300,600,700,300italic,400italic,600italic,700italic"
     rel="stylesheet" type="text/css" />
-  <script src="https://cdn.socket.io/4.1.2/socket.io.min.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const socket = io.connect('http://localhost:5000'); // Replace with your Socket.IO server URL
-
-      socket.on('connection', () => {
-        console.log('Connected to Socket.IO server');
-      });
-
-      socket.on('articles', (articles) => {
-        console.log('Received articles:', articles);
-      });
-      //tags
-      socket.on('tags', (tags) => {
-        console.log('Received tags:', tags);
-      });
-      //comments
-      socket.on('comments', (comments) => {
-        console.log('Received comments:', comments);
-      });
-
-      // like-unlike
-      socket.on('like-unlike', (likeUnlike) => {
-        console.log('Received like-unlike:', likeUnlike);
-      });
-      socket.on('disconnect', () => {
-        console.log('Disconnected from Socket.IO server');
-      });
-    });
-  </script>
 </head>
 
 <body>

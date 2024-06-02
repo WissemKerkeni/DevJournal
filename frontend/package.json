@@ -43,6 +43,7 @@
     "@ngrx/signals": "17.2.0",
     "@ngrx/store": "17.2.0",
     "@nx/angular": "19.0.2",
+    "@types/socket.io-client": "^3.0.0",
     "core-js": "3.31.0",
     "eslint-plugin-ngrx": "2.1.4",
     "marked": "5.0.1",

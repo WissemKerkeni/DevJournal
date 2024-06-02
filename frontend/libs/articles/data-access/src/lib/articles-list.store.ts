@@ -46,6 +46,22 @@ export const ArticlesListStore = signalStore(
         ),
       ),
     ),
+    addArticle: rxMethod<Article>(
+      pipe(
+        concatMap((article) =>
+          articlesService.publishArticle(article).pipe(
+            tapResponse({
+              next: ({ article }) => {
+                patchState(store, {
+                  articles: addArticle(store.articles(), article),
+                });
+              },
+              error: (error) => console.error('Error occurred while adding an article: ', error),
+            }),
+          ),
+        ),
+      ),
+    ),
     favouriteArticle: rxMethod<string>(
       pipe(
         concatMap((slug) =>
@@ -109,4 +125,9 @@ function replaceArticle(articles: Articles, payload: Article): Articles {
     ...articles.entities.slice(articleIndex + 1),
   ];
   return { ...articles, entities };
+}
+
+function addArticle(articles: Articles, newArticle: Article) {
+  articles.entities.unshift(newArticle);
+  return { articlesCount: articles.entities.length, entities: articles.entities };
 }
