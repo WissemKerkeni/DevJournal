@@ -59,17 +59,16 @@ export class HomeComponent {
     this.articlesListStore.loadArticles(config);
   });
 
-  setListTo(type: ListType = 'ALL') {
-    const config = { ...articlesListInitialState.listConfig, type };
-    this.articlesListStore.setListConfig(config);
-  }
-
   getArticles(isLoggedIn: boolean) {
     if (isLoggedIn) {
       this.setListTo('FEED');
     } else {
       this.setListTo('ALL');
     }
+  }
+
+  setListTo(type: ListType = 'ALL') {
+    this.articlesListStore.setListConfig({ ...articlesListInitialState.listConfig, type });
   }
 
   setListTag(tag: string) {

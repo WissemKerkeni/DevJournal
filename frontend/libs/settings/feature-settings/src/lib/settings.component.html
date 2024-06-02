@@ -3,13 +3,19 @@
     <div class="row">
       <div class="col-md-6 offset-md-3 col-xs-12">
         <h1 class="text-xs-center">Your Settings</h1>
-
- 
-        <div class="edit-button-container">
-          <!-- <button (click)="submit()" class="btn btn-lg btn-primary pull-xs-right" type="submit">Update Settings</button> -->
+        <div class="switch-container">
+          Dark mode
+          <div class="switch" (click)="switchTheme()">
+            <input type="checkbox" [checked]="$theme() === 'dark'">
+            <span class="slider"></span>
+          </div>
         </div>
 
         <hr />
+
+        <div class="edit-button-container">
+          <!-- <button (click)="submit()" class="btn btn-lg btn-primary pull-xs-right" type="submit">Update Settings</button> -->
+
 
         <button class="btn btn-outline-danger" (click)="logout()">click here to logout.</button>
       </div>

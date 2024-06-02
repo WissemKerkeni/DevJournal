@@ -8,7 +8,7 @@ import { NavbarComponent } from './layout/navbar/navbar.component'
 import { Article } from '@infordevjournal/core/api-types';
 import { ArticlesListStore } from '@infordevjournal/articles/data-access';
 import { HomeStoreService } from '@infordevjournal/home/src/lib/home.store'
-import { NotificationsStore, WebSocketService } from './data-access/src';
+import { NotificationsStore, ThemeService, WebSocketService } from './data-access/src';
 
 @Component({
   selector: 'cdt-root',
@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   private readonly articlesListStore = inject(ArticlesListStore);
   private readonly homeStore = inject(HomeStoreService)
   private readonly notificationsStore = inject(NotificationsStore);
+  private readonly themeService = inject(ThemeService);
 
   $user = this.authStore.user;
   $isLoggedIn = this.authStore.loggedIn;
@@ -46,6 +47,8 @@ export class AppComponent implements OnInit {
         filter((token) => !!token),
       )
       .subscribe(() => this.authStore.getUser());
+
+    this.themeService.initTheme();
 
     this.webSocketService.onEvent('connection').subscribe(() => {
       console.log('Connected to Socket.IO server');

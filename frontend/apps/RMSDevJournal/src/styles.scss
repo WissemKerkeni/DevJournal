@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import './colors';
 
 a {
   cursor: pointer;
@@ -344,8 +345,8 @@ body {
     sans-serif;
   font-size: 1rem;
   line-height: 1.5;
-  color: #373a3c;
-  background-color: #fff;
+  color: var(--text-color);
+  background-color: var(--background-color);
 }
 
 [tabindex='-1']:focus {
@@ -407,7 +408,7 @@ blockquote {
 }
 
 a {
-  color: #326372;
+  color: var(--primary-color);
   text-decoration: none;
 }
 
@@ -764,7 +765,7 @@ pre {
   margin-top: 0;
   margin-bottom: 1rem;
   font-size: 90%;
-  color: #373a3c;
+  color: var(--text-color);
 }
 
 pre code {
@@ -2316,7 +2317,7 @@ pre code {
 
 .thead-inverse th {
   color: #fff;
-  background-color: #373a3c;
+  background-color: var(--text-color);
 }
 
 .thead-default th {
@@ -2326,7 +2327,7 @@ pre code {
 
 .table-inverse {
   color: #eceeef;
-  background-color: #373a3c;
+  background-color: var(--text-color);
 }
 
 .table-inverse.table-bordered {
@@ -2753,10 +2754,13 @@ input[type='checkbox'].disabled {
   vertical-align: middle;
   cursor: pointer;
   user-select: none;
-  border: 1px solid transparent;
+  border: 1px solid var(--unfollow-border-color);
   padding: 0.5rem 1rem;
   font-size: 1rem;
   border-radius: 0.25rem;
+  color: var(--unfollow-color);
+  background-color: var(--unfollow-background-color);
+
 }
 
 .btn:focus,
@@ -2853,20 +2857,20 @@ fieldset[disabled] a.btn {
 }
 
 .btn-secondary {
-  color: #373a3c;
+  color: var(--text-color);
   background-color: #fff;
   border-color: #ccc;
 }
 
 .btn-secondary:hover {
-  color: #373a3c;
+  color: var(--text-color);
   background-color: #e6e6e6;
   border-color: #adadad;
 }
 
 .btn-secondary:focus,
 .btn-secondary.focus {
-  color: #373a3c;
+  color: var(--text-color);
   background-color: #e6e6e6;
   border-color: #adadad;
 }
@@ -2874,7 +2878,7 @@ fieldset[disabled] a.btn {
 .btn-secondary:active,
 .btn-secondary.active,
 .open > .btn-secondary.dropdown-toggle {
-  color: #373a3c;
+  color: var(--text-color);
   background-color: #e6e6e6;
   border-color: #adadad;
   background-image: none;
@@ -2889,7 +2893,7 @@ fieldset[disabled] a.btn {
 .open > .btn-secondary.dropdown-toggle:hover,
 .open > .btn-secondary.dropdown-toggle:focus,
 .open > .btn-secondary.dropdown-toggle.focus {
-  color: #373a3c;
+  color: var(--text-color);
   background-color: #d4d4d4;
   border-color: #8c8c8c;
 }
@@ -3133,10 +3137,10 @@ fieldset[disabled] a.btn {
 }
 
 .btn-outline-primary {
-  color: #b11515;
+  color: var(--follow-color);
   background-image: none;
   background-color: transparent;
-  border-color: #b11515;
+  border-color: var(--follow-border-color);
 }
 
 .btn-outline-primary:hover {
@@ -3586,10 +3590,10 @@ input[type='button'].btn-block {
   padding: 5px 0;
   margin: 2px 0 0;
   font-size: 1rem;
-  color: #373a3c;
+  color: var(--text-color);
   text-align: left;
   list-style: none;
-  background-color: #fff;
+  background-color: var(--background-color);
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 0.25rem;
@@ -3608,7 +3612,7 @@ input[type='button'].btn-block {
   padding: 3px 20px;
   clear: both;
   font-weight: 400;
-  color: #373a3c;
+  color: var(--text-color);
   text-align: inherit;
   white-space: nowrap;
   background: 0 0;
@@ -4487,21 +4491,21 @@ input[type='button'].btn-block {
 }
 
 .navbar-light .navbar-brand {
-  color: rgba(0, 0, 0, 0.8);
+  color: var(--link-active-color);
 }
 
 .navbar-light .navbar-brand:focus,
 .navbar-light .navbar-brand:hover {
-  color: rgba(0, 0, 0, 0.8);
+  color: var(--link-active-color);
 }
 
 .navbar-light .navbar-nav .nav-link {
-  color: rgba(0, 0, 0, 0.3);
+  color: var(--link-text-color);
 }
 
 .navbar-light .navbar-nav .nav-link:focus,
 .navbar-light .navbar-nav .nav-link:hover {
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--link-hover-color);
 }
 
 .navbar-light .navbar-nav .open > .nav-link,
@@ -4516,7 +4520,7 @@ input[type='button'].btn-block {
 .navbar-light .navbar-nav .nav-link.active,
 .navbar-light .navbar-nav .nav-link.active:focus,
 .navbar-light .navbar-nav .nav-link.active:hover {
-  color: rgba(0, 0, 0, 0.8);
+  color: var(--link-active-color);
 }
 
 .navbar-light .navbar-divider {
@@ -5006,7 +5010,7 @@ a.tag:hover {
 }
 
 .tag-default {
-  background-color: #818a91;
+  background-color: var(--tag-background-color);
 }
 
 .tag-default[href]:focus,
@@ -6356,7 +6360,7 @@ button.close {
 
 .bg-inverse {
   color: #eceeef;
-  background-color: #373a3c;
+  background-color: var(--text-color);
 }
 
 .bg-faded {
@@ -7318,7 +7322,7 @@ a.text-danger:hover {
 }
 
 .tag-default {
-  color: #fff !important;
+  color: var(--tag-color) !important;
   font-size: 0.8rem;
   padding-top: 0.1rem;
   padding-bottom: 0.1rem;
@@ -7355,7 +7359,7 @@ ul.tag-list li {
   font-size: 1.5rem !important;
   padding-top: 0 !important;
   margin-right: 2rem !important;
-  color: #326372 !important;
+  color: var(--primary-color) !important;
 }
 
 .nav-link .user-pic {
@@ -7388,7 +7392,7 @@ ul.tag-list li {
 }
 
 footer {
-  background: #f3f3f3;
+  background: var(--background-color-2);
   margin-top: 3rem;
   padding: 1rem 0;
   position: absolute;
@@ -7547,7 +7551,7 @@ footer .attribution {
 
 .home-page .sidebar {
   padding: 5px 10px 10px;
-  background: #f3f3f3;
+  background: var(--background-color-2);
   border-radius: 4px;
 }
 
@@ -7676,7 +7680,7 @@ footer .attribution {
 
 .profile-page .user-info {
   text-align: center;
-  background: #f3f3f3;
+  background: var(--background-color-2);
   padding: 2rem 0 1rem;
 }
 
@@ -7747,3 +7751,62 @@ h6 a {
     left: 1.25rem;
   }
 }
+
+.switch-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 2.25rem;
+    height: 1.125rem;
+    margin-left: 1rem;
+
+    input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+
+      &:checked + .slider {
+        background-color: #326372;
+
+        &:before {
+          -webkit-transform: translateX(0.875rem);
+          -ms-transform: translateX(0.875rem);
+          transform: translateX(0.875rem);
+        }
+      }
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #cccccc;
+      border-radius: 16px;
+      -webkit-transition: .4s;
+      transition: .4s;
+
+      &:before {
+        position: absolute;
+        content: "";
+        height: 0.875rem;
+        width: 0.875rem;
+        left: 0.25rem;
+        bottom: 0.125rem;
+        background-color: white;
+        border-radius: 50%;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+    }
+  }
+
+}
+

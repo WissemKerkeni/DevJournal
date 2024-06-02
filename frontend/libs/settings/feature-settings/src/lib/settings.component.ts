@@ -1,11 +1,18 @@
-import { DynamicFormComponent, Field, formsActions, ListErrorsComponent, ngrxFormsQuery } from '@infordevjournal/core/forms';
+import {
+  DynamicFormComponent,
+  Field,
+  formsActions,
+  ListErrorsComponent,
+  ngrxFormsQuery,
+} from '@infordevjournal/core/forms';
 import { ChangeDetectionStrategy, Component, effect, inject, OnInit, untracked } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { AuthStore } from '@infordevjournal/auth/data-access';
 import { SettingsStoreService } from './settings.store';
 import { Store } from '@ngrx/store';
+import { ThemeService } from '@default/data-access/src';
 
- 
+
 @Component({
   standalone: true,
   selector: 'cdt-settings',
@@ -18,9 +25,11 @@ import { Store } from '@ngrx/store';
 export class SettingsComponent implements OnInit {
   private readonly store = inject(Store);
   private readonly authStore = inject(AuthStore);
+  private readonly themeService = inject(ThemeService);
 
   structure$ = this.store.select(ngrxFormsQuery.selectStructure);
   data$ = this.store.select(ngrxFormsQuery.selectData);
+  $theme = this.themeService.theme;
 
   readonly fillInForm = effect(() => {
     const isLoggedIn = this.authStore.loggedIn();
@@ -32,6 +41,10 @@ export class SettingsComponent implements OnInit {
   ngOnInit() {
   }
 
+  switchTheme() {
+    console.log("switchTheme");
+    this.themeService.switchTheme();
+  }
 
   logout() {
     this.authStore.logout();
