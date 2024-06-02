@@ -1,14 +1,14 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, effect } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthStore, LocalStorageJwtService } from '@infordevjournal/auth/data-access';
 import { filter, take } from 'rxjs/operators';
 import { FooterComponent } from './layout/footer/footer.component';
-import { NavbarComponent } from './layout/navbar/navbar.component';
-import { NotificationsStore, WebSocketService } from './data-access/src';
-import { ArticlesListStore } from '@infordevjournal/articles/data-access';
+import { NavbarComponent } from './layout/navbar/navbar.component'
 import { Article } from '@infordevjournal/core/api-types';
-import { HomeStoreService } from '@infordevjournal/home/src/lib/home.store';
+import { ArticlesListStore } from '@infordevjournal/articles/data-access';
+import { HomeStoreService } from '@infordevjournal/home/src/lib/home.store'
+import { NotificationsStore, WebSocketService } from './data-access/src';
 
 @Component({
   selector: 'cdt-root',
@@ -28,7 +28,15 @@ export class AppComponent implements OnInit {
 
   $user = this.authStore.user;
   $isLoggedIn = this.authStore.loggedIn;
-  $notifications = this.notificationsStore.notifications
+  $notifications = this.notificationsStore.notifications;
+
+  readonly loadNotificationsOnLogin = effect(() => {
+    const isLoggedIn = this.authStore.loggedIn();
+    if (!isLoggedIn) {
+      return;
+    }
+    this.notificationsStore.loadNotifications();
+  });
 
   ngOnInit() {
     this.localStorageJwtService
