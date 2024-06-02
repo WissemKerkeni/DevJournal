@@ -5,13 +5,15 @@ import { TagsListComponent } from './tags-list/tags-list.component';
 import { ArticleListComponent } from '@infordevjournal/articles/feature-articles-list/src';
 import { HomeStoreService } from './home.store';
 import { AuthStore } from '@infordevjournal/auth/data-access';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'cdt-home',
   standalone: true,
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [AsyncPipe, NgClass, TagsListComponent, ArticleListComponent],
+  imports: [ReactiveFormsModule, AsyncPipe, NgClass, TagsListComponent, ArticleListComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
@@ -22,14 +24,40 @@ export class HomeComponent {
   $listConfig = this.articlesListStore.listConfig;
   tags$ = this.homeStore.tags$;
 
+  searchControl = new FormControl('');
+
   constructor() {
-    this.articlesListStore.loadArticles(this.$listConfig);
+    this.articlesListStore.loadArticles(this.$listConfig());
     this.homeStore.loadTags();
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+      )
+      .subscribe((searchText) => {
+        const config = {
+          ...articlesListInitialState.listConfig,
+          filters: {
+            ...articlesListInitialState.listConfig.filters,
+            title: searchText ?? undefined,
+          },
+        };
+        this.articlesListStore.setListConfig(config);
+      });
   }
 
   readonly loadArticlesOnLogin = effect(() => {
     const isLoggedIn = this.authStore.loggedIn();
     untracked(() => this.getArticles(isLoggedIn));
+  });
+
+  readonly loadArticlesOnListConfigChanged = effect(() => {
+    const isLoggedIn = untracked(() =>  this.authStore.loggedIn());
+    if (!isLoggedIn) {
+      return;
+    }
+    const config = this.$listConfig();
+    this.articlesListStore.loadArticles(config);
   });
 
   setListTo(type: ListType = 'ALL') {
@@ -50,6 +78,7 @@ export class HomeComponent {
       ...articlesListInitialState.listConfig,
       filters: {
         ...articlesListInitialState.listConfig.filters,
+        title: '',
         tag,
       },
     });

@@ -12,6 +12,7 @@ export interface ArticlesListConfig {
 }
 
 export interface Filters {
+  title?: string;
   tag?: string;
   author?: string;
   favorited?: string;

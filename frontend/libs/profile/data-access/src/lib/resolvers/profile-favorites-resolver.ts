@@ -11,6 +11,8 @@ export const profileFavoritesResolver: ResolveFn<boolean> = (route: ActivatedRou
     ...articlesListInitialState.listConfig,
     filters: {
       ...articlesListInitialState.listConfig.filters,
+      tag: '',
+      title: '',
       favorited: username,
     },
   };

@@ -32,7 +32,8 @@ export class ArticlesService {
   }
 
   query(config: ArticlesListConfig): Observable<{ articles: Article[]; articlesCount: number }> {
-    return this.apiService.get('/articles', this.toHttpParams(config.filters));
+    const apiUrl = config.filters.title ? '/articles/search' : '/articles';
+    return this.apiService.get(apiUrl, this.toHttpParams(config.filters));
   }
 
   publishArticle(article: Article): Observable<ArticleResponse> {

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, output, input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, output, input } from '@angular/core';
 
 @Component({
   selector: 'cdt-tags-list',
@@ -8,4 +8,10 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, output
 })
 export class TagsListComponent {
   tags = input([]);
+  select = output<string>();
+  selectedTag = input([]);
+
+  selectTag(tag: string) {
+    this.select.emit(tag);
+  }
 }

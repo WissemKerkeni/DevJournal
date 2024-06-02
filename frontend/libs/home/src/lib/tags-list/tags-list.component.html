@@ -2,6 +2,11 @@
 
 <div class="tag-list">
   @for (tag of tags(); track tag) {
-    <a  class="tag-pill tag-default">{{ tag }}</a>
+    <a
+      class="tag-pill tag-default"
+      [class.tag-primary]="selectedTag() === tag"
+      (click)="selectTag(tag)">
+      {{ tag }}
+    </a>
   }
 </div>
