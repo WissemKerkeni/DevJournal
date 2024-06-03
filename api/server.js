@@ -253,7 +253,11 @@ server.post('/articles', (req, res) => {
       {
         article:
         {
-          title, description, body, tagList,
+          title,
+          description,
+          body,
+          tagList,
+          slug: title,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           favorited: false,
@@ -414,7 +418,8 @@ server.post('/articles/:slug/comments', (req, res) => {
       var data = JSON.parse(data.toString());
       const article = data.articles.articles.find(article => article.slug === req.params.slug);
       if (article) {
-        article?.comment?.push({ id: Math.random().toString(36).substr(2, 9), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), body: req.body.comment.body, author: { username: user.username, bio: user.bio, image: user.image, following: user.following } });
+        const newComment = { id: Math.random().toString(36).substr(2, 9), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), body: req.body.comment.body, author: { username: user.username, bio: user.bio, image: user.image, following: user.following } };
+        article?.comment?.push(newComment);
         data.tags.tags = [...new Set([...data.tags.tags])];
         fs.writeFile("./database.json", JSON.stringify(data), (err, result) => {  // WRITE
           if (err) {
@@ -425,7 +430,7 @@ server.post('/articles/:slug/comments', (req, res) => {
           }
         }
         );
-        return res.status(200).json({ comment: article.comment?.map(comment => ({ ...comment, author: user, username: user.username, image: user.image })) });
+        return res.status(200).json({ comment: ({ ...newComment, author: user, username: user.username, image: user.image }) });
       }
       return res.status(404).json({ status: 404, message: 'Article not found' });
     });

@@ -46,6 +46,7 @@ export class ArticleEditComponent implements OnInit, OnDestroy {
 
   structure$ = this.store.select(ngrxFormsQuery.selectStructure);
   data$ = this.store.select(ngrxFormsQuery.selectData);
+  $isAddArticleLoading = this.articleStore.addArticleLoading;
 
   readonly setArticleDataToForm = effect(() => {
     const articleLoaded = this.articleStore.getArticleLoaded();

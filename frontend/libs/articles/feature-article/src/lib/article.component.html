@@ -38,9 +38,10 @@
           @if ($isAuthenticated()) {
             <cdt-add-comment
               [article]="article"
+              [currentUser]="$currentUser()"
+              [isLoading]="$isAddCommentLoading()"
               [data$]="data$"
               [structure$]="structure$"
-              [currentUser]="$currentUser()"
               [touchedForm$]="touchedForm$"
               (submitComment)="submit($event)"
               (updateForm)="updateForm($event)"
@@ -51,13 +52,17 @@
             this article.
           }
 
-          @for (comment of $comments(); track comment.id) {
-            <cdt-article-comment
-              [currentUser]="$currentUser()"
-              (delete)="deleteComment($event)"
-              [article]="article"
-              [comment]="comment"
-            ></cdt-article-comment>
+          @defer (when !$isCommentsLoading()) {
+            @for (comment of $comments(); track comment.id) {
+              <cdt-article-comment
+                [currentUser]="$currentUser()"
+                (delete)="deleteComment($event)"
+                [article]="article"
+                [comment]="comment"
+              ></cdt-article-comment>
+            }
+          } @placeholder {
+            <div>Loading comments...</div>
           }
         </div>
       </div>

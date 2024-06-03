@@ -4,10 +4,10 @@ import { RouterModule } from '@angular/router';
 import { AuthStore, LocalStorageJwtService } from '@infordevjournal/auth/data-access';
 import { filter, take } from 'rxjs/operators';
 import { FooterComponent } from './layout/footer/footer.component';
-import { NavbarComponent } from './layout/navbar/navbar.component'
+import { NavbarComponent } from './layout/navbar/navbar.component';
 import { Article } from '@infordevjournal/core/api-types';
 import { ArticlesListStore } from '@infordevjournal/articles/data-access';
-import { HomeStoreService } from '@infordevjournal/home/src/lib/home.store'
+import { HomeStoreService } from '@infordevjournal/home/src/lib/home.store';
 import { NotificationsStore, ThemeService, WebSocketService } from './data-access/src';
 
 @Component({
@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   private readonly authStore = inject(AuthStore);
   private readonly webSocketService = inject(WebSocketService);
   private readonly articlesListStore = inject(ArticlesListStore);
-  private readonly homeStore = inject(HomeStoreService)
+  private readonly homeStore = inject(HomeStoreService);
   private readonly notificationsStore = inject(NotificationsStore);
   private readonly themeService = inject(ThemeService);
 
@@ -76,18 +76,5 @@ export class AppComponent implements OnInit {
     // this.webSocketService.onEvent('comments').subscribe((comments) => {
     //   console.log('Received comments:', comments);
     // });
-
-    // like-unlike
-    this.webSocketService.onEvent<Article>('like-unlike').subscribe((article) => {
-      if (!this.authStore.loggedIn()) {
-        return;
-      }
-      console.log('Received like-unlike:', article);
-      this.articlesListStore.updateArticle(article);
-    });
-
-    this.webSocketService.onEvent('disconnect').subscribe(() => {
-      console.log('Disconnected from Socket.IO server');
-    });
   }
 }

@@ -1,5 +1,13 @@
 import { Field, formsActions, ngrxFormsQuery } from '@infordevjournal/core/forms';
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, computed, inject, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+  computed,
+  inject,
+  input,
+} from '@angular/core';
 import { ArticleStore, ArticlesListStore } from '@infordevjournal/articles/data-access';
 import { ArticleMetaComponent } from './article-meta/article-meta.component';
 import { AsyncPipe } from '@angular/common';
@@ -39,6 +47,8 @@ export class ArticleComponent implements OnInit, OnDestroy {
 
   $article = this.articleStore.data;
   $comments = this.articleStore.comments;
+  $isAddCommentLoading = this.articleStore.addCommentLoading;
+  $isCommentsLoading = this.articleStore.getCommentsLoading;
   structure$ = this.store.select(ngrxFormsQuery.selectStructure);
   data$ = this.store.select(ngrxFormsQuery.selectData);
   touchedForm$ = this.store.select(ngrxFormsQuery.selectTouched);
@@ -58,21 +68,27 @@ export class ArticleComponent implements OnInit, OnDestroy {
   follow(username: string) {
     this.articleStore.followUser(username);
   }
+
   unfollow(username: string) {
     this.articleStore.unfollowUser(username);
   }
+
   favorite(slug: string) {
     this.articlesListStore.favouriteArticle(slug);
   }
+
   unfavorite(slug: string) {
     this.articlesListStore.unFavouriteArticle(slug);
-  } 
+  }
+
   deleteComment(data: { commentId: number; slug: string }) {
     this.articleStore.deleteComment(data);
   }
+
   submit(slug: string) {
     this.articleStore.addComment(slug);
   }
+
   updateForm(changes: any) {
     this.store.dispatch(formsActions.updateData({ data: changes }));
   }

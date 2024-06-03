@@ -26,106 +26,109 @@ export const ArticlesListStore = signalStore(
       ),
     ),
   })),
-  withMethods((
-    store,
-    articlesService = inject(ArticlesService),
-    actionsService = inject(ActionsService),
-    notificationStore = inject(NotificationsStore)) => ({
-    loadArticles: rxMethod<ArticlesListConfig>(
-      pipe(
-        tap(() => setLoading('getArticles')),
-        concatMap((listConfig) =>
-          articlesService.query(listConfig).pipe(
-            tapResponse({
-              next: ({ articles, articlesCount }) => {
-                const entities = store.listConfig().loadMore ? [...store.articles().entities, ...articles] : articles;
-                patchState(store, {
-                  articles: { articlesCount, entities },
-                  ...setLoaded('getArticles'),
-                });
-              },
-              error: () => {
-                patchState(store, { ...articlesListInitialState, ...setLoaded('getArticles') });
-              },
-            }),
+  withMethods(
+    (
+      store,
+      articlesService = inject(ArticlesService),
+      actionsService = inject(ActionsService),
+      notificationStore = inject(NotificationsStore),
+    ) => ({
+      loadArticles: rxMethod<ArticlesListConfig>(
+        pipe(
+          tap(() => setLoading('getArticles')),
+          concatMap((listConfig) =>
+            articlesService.query(listConfig).pipe(
+              tapResponse({
+                next: ({ articles, articlesCount }) => {
+                  const entities = store.listConfig().loadMore ? [...store.articles().entities, ...articles] : articles;
+                  patchState(store, {
+                    articles: { articlesCount, entities },
+                    ...setLoaded('getArticles'),
+                  });
+                },
+                error: () => {
+                  patchState(store, { ...articlesListInitialState, ...setLoaded('getArticles') });
+                },
+              }),
+            ),
           ),
         ),
       ),
-    ),
-    addArticle: rxMethod<Article>(
-      pipe(
-        concatMap((article) =>
-          articlesService.publishArticle(article).pipe(
-            tapResponse({
-              next: ({ article }) => {
-                patchState(store, {
-                  articles: addArticle(store.articles(), article),
-                });
-                notificationStore.addNotification({ article });
-              },
-              error: (error) => console.error('Error occurred while adding an article: ', error),
-            }),
+      addArticle: rxMethod<Article>(
+        pipe(
+          concatMap((article) =>
+            articlesService.publishArticle(article).pipe(
+              tapResponse({
+                next: ({ article }) => {
+                  patchState(store, {
+                    articles: addArticle(store.articles(), article),
+                  });
+                  notificationStore.addNotification({ article });
+                },
+                error: (error) => console.error('Error occurred while adding an article: ', error),
+              }),
+            ),
           ),
         ),
       ),
-    ),
-    favouriteArticle: rxMethod<string>(
-      pipe(
-        concatMap((slug) =>
-          actionsService.favorite(slug).pipe(
-            tapResponse({
-              next: ({ article }) => {
-                patchState(store, {
-                  articles: replaceArticle(store.articles(), article),
-                });
-              },
-              error: () => {
-                patchState(store, articlesListInitialState);
-              },
-            }),
+      favouriteArticle: rxMethod<string>(
+        pipe(
+          concatMap((slug) =>
+            actionsService.favorite(slug).pipe(
+              tapResponse({
+                next: ({ article }) => {
+                  patchState(store, {
+                    articles: replaceArticle(store.articles(), article),
+                  });
+                },
+                error: () => {
+                  patchState(store, articlesListInitialState);
+                },
+              }),
+            ),
           ),
         ),
       ),
-    ),
-    unFavouriteArticle: rxMethod<string>(
-      pipe(
-        concatMap((slug) =>
-          actionsService.unfavorite(slug).pipe(
-            tapResponse({
-              next: ({ article }) => {
-                patchState(store, {
-                  articles: replaceArticle(store.articles(), article),
-                });
-              },
-              error: () => {
-                patchState(store, articlesListInitialState);
-              },
-            }),
+      unFavouriteArticle: rxMethod<string>(
+        pipe(
+          concatMap((slug) =>
+            actionsService.unfavorite(slug).pipe(
+              tapResponse({
+                next: ({ article }) => {
+                  patchState(store, {
+                    articles: replaceArticle(store.articles(), article),
+                  });
+                },
+                error: () => {
+                  patchState(store, articlesListInitialState);
+                },
+              }),
+            ),
           ),
         ),
       ),
-    ),
-    updateArticle: (article: Article) => {
-      patchState(store, { articles: replaceArticle(store.articles(), article) });
-      notificationStore.addNotification({ likeUnlike: article });
-    },
-    setListConfig: (listConfig: ArticlesListConfig) => {
-      patchState(store, { listConfig });
-    },
-    setListPage: (page: number) => {
-      const filters = {
-        ...store.listConfig.filters(),
-        offset: (store.listConfig().filters.limit ?? 10) * (page - 1),
-      };
-      const listConfig: ArticlesListConfig = {
-        ...store.listConfig(),
-        currentPage: page,
-        loadMore: page > 1,
-        filters,
-      };
-      patchState(store, { listConfig });
-    },
-  })),
+      updateArticle: (article: Article) => {
+        patchState(store, { articles: replaceArticle(store.articles(), article) });
+        notificationStore.addNotification({ likeUnlike: article });
+      },
+      setListConfig: (listConfig: ArticlesListConfig) => {
+        patchState(store, { listConfig });
+      },
+      setListPage: (page: number) => {
+        const filters = {
+          ...store.listConfig.filters(),
+          offset: (store.listConfig().filters.limit ?? 10) * (page - 1),
+        };
+        const listConfig: ArticlesListConfig = {
+          ...store.listConfig(),
+          currentPage: page,
+          loadMore: page > 1,
+          filters,
+        };
+        patchState(store, { listConfig });
+      },
+    }),
+  ),
   withCallState({ collection: 'getArticles' }),
 );
 

@@ -1,12 +1,15 @@
 <p>Popular Tags</p>
 
 <div class="tag-list">
-  @for (tag of tags(); track tag) {
-    <a
-      class="tag-pill tag-default"
-      [class.tag-primary]="selectedTag() === tag"
-      (click)="selectTag(tag)">
-      {{ tag }}
-    </a>
+  @defer (on timer(0.5s)) {
+    @for (tag of tags(); track tag) {
+      <a class="tag-pill tag-default" [class.tag-primary]="selectedTag() === tag" (click)="selectTag(tag)">
+        {{ tag }}
+      </a>
+    }
+  } @placeholder {
+    @for (tag of fakeTags; track tag) {
+      <div class="skeleton" [style.width.rem]="tag"></div>
+    }
   }
 </div>

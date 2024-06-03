@@ -82,15 +82,16 @@ export const ArticleStore = signalStore(
           ),
         ),
       ),
-
       addComment: rxMethod<string>(
         pipe(
           concatLatestFrom(() => reduxStore.select(ngrxFormsQuery.selectData)),
+          tap(() => patchState(store, { addCommentLoading: true })),
           switchMap(([slug, data]) =>
             articlesService.addComment(slug, data.comment).pipe(
               tapResponse({
-                next: () => patchState(store, { comments: [data.comment, ...store.comments()] }),
+                next: ({ comment }) => patchState(store, { comments: [comment, ...store.comments()] }),
                 error: ({ error }) => reduxStore.dispatch(formsActions.setErrors({ errors: error.errors })),
+                finalize: () => patchState(store, { addCommentLoading: false }),
               }),
             ),
           ),
@@ -99,11 +100,13 @@ export const ArticleStore = signalStore(
       publishArticle: rxMethod<void>(
         pipe(
           concatLatestFrom(() => reduxStore.select(ngrxFormsQuery.selectData)),
+          tap(() => patchState(store, { addArticleLoading: true })),
           switchMap(([_, data]) =>
             articlesService.publishArticle(data).pipe(
               tapResponse({
                 next: ({ article }) => router.navigate(['article', article.slug]),
                 error: ({ error }) => reduxStore.dispatch(formsActions.setErrors({ errors: error.errors })),
+                finalize: () => patchState(store, { addArticleLoading: true }),
               }),
             ),
           ),

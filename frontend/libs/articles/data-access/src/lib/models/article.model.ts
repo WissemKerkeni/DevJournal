@@ -3,6 +3,8 @@ import { Article, Comment } from '@infordevjournal/core/api-types';
 export interface ArticleState {
   data: Article;
   comments: Comment[];
+  addArticleLoading: boolean;
+  addCommentLoading: boolean;
 }
 
 export const articleInitialState: ArticleState = {
@@ -25,4 +27,6 @@ export const articleInitialState: ArticleState = {
     },
   },
   comments: [],
+  addArticleLoading: false,
+  addCommentLoading: false,
 };

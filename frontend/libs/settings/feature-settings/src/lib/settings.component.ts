@@ -42,7 +42,6 @@ export class SettingsComponent implements OnInit {
   }
 
   switchTheme() {
-    console.log("switchTheme");
     this.themeService.switchTheme();
   }
 

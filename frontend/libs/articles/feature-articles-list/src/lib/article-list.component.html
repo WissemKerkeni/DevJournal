@@ -1,4 +1,4 @@
-@if (!$isLoading()) {
+@defer (when !$isLoading()) {
   <div
     infiniteScroll
     [infiniteScrollDistance]="2"
@@ -15,9 +15,24 @@
       >
       </cdt-article-list-item>
     } @empty {
-      <div>No articles are here... yet.</div>
-    }
+      <div>No articles are here... yet.</div>    }
   </div>
-} @else {
-  <div>Loading articles...</div>
+} @loading {
+  @for (article of fakeArticles; track article) {
+    <div class="article-skeleton">
+      <div class="article-meta">
+        <img class="skeleton" alt="" />
+        <div class="info">
+          <div class="skeleton author"></div>
+          <div class="skeleton date"></div>
+        </div>
+        <button class="skeleton btn btn-sm pull-xs-right"></button>
+      </div>
+      <div class="preview-link">
+        <h1 class="skeleton"></h1>
+        <p class="skeleton"></p>
+        <p class="skeleton"></p>
+      </div>
+    </div>
+  }
 }

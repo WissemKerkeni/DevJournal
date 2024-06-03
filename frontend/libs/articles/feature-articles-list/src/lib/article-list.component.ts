@@ -22,6 +22,8 @@ export class ArticleListComponent {
   $listConfig = this.articlesListStore.listConfig;
   $isLoading = this.articlesListStore.getArticlesLoading;
 
+  fakeArticles = Array.from({ length: 4 }, (_, i) => i)
+
   favorite(slug: string) {
     this.articlesListStore.favouriteArticle(slug);
   }

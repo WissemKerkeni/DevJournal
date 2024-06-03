@@ -27,12 +27,9 @@ export class HomeStoreService extends ComponentStore<HomeState> {
       switchMap(() =>
         this.homeService.getTags().pipe(
           tapResponse({
-              next: (response) =>
-                this.patchState({ tags: response.tags }),
-              error: (error) =>
-                console.error('Error occurred while loading tags: ', error),
-            },
-          ),
+            next: (response) => this.patchState({ tags: response.tags }),
+            error: (error) => console.error('Error occurred while loading tags: ', error),
+          }),
         ),
       ),
     ),
@@ -49,7 +46,9 @@ export class HomeStoreService extends ComponentStore<HomeState> {
               this.notificationsStore.addNotification({ tag: newTag });
             },
             error: (error) => console.error('Error occurred while adding a tag: ', error),
-          })),
-      )));
-
+          }),
+        ),
+      ),
+    ),
+  );
 }

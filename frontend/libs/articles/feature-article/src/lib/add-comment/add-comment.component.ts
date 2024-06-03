@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 export class AddCommentComponent {
   article = input.required<Article>();
   currentUser = input.required<User>();
+  isLoading = input.required<boolean>();
   @Input() data$!: Observable<any>;
   @Input() structure$!: Observable<Field[]>;
   @Input() touchedForm$!: Observable<boolean>;

@@ -7,7 +7,13 @@
         <cdt-dynamic-form (updateForm)="updateForm($event)" [data$]="data$" [structure$]="structure$">
         </cdt-dynamic-form>
 
-        <button class="btn btn-lg pull-xs-right btn-primary" type="button" (click)="submit()">Publish Article</button>
+        <button class="btn btn-lg pull-xs-right btn-primary add-btn" type="button" (click)="!$isAddArticleLoading() && submit()">
+          @if ($isAddArticleLoading()) {
+            <span class="spinner"></span>
+          } @else {
+            <span> Publish Article </span>
+          }
+        </button>
       </div>
     </div>
   </div>
