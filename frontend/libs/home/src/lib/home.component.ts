@@ -23,6 +23,7 @@ export class HomeComponent {
 
   $listConfig = this.articlesListStore.listConfig;
   tags$ = this.homeStore.tags$;
+  isLoading$ = this.homeStore.isLoading$;
 
   searchControl = new FormControl('');
 

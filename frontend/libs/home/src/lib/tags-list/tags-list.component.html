@@ -1,11 +1,13 @@
 <p>Popular Tags</p>
 
 <div class="tag-list">
-  @defer (on timer(0.5s)) {
+  @defer (when !isLoading()) {
     @for (tag of tags(); track tag) {
       <a class="tag-pill tag-default" [class.tag-primary]="selectedTag() === tag" (click)="selectTag(tag)">
         {{ tag }}
       </a>
+    } @empty {
+      <div>No tags are here... yet</div>
     }
   } @placeholder {
     @for (tag of fakeTags; track tag) {

@@ -21,6 +21,7 @@ export class ArticleListComponent {
   $articles = this.articlesListStore.articles.entities;
   $listConfig = this.articlesListStore.listConfig;
   $isLoading = this.articlesListStore.getArticlesLoading;
+  $isLoaded = this.articlesListStore.getArticlesLoaded;
 
   fakeArticles = Array.from({ length: 4 }, (_, i) => i)
 

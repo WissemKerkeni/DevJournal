@@ -25,7 +25,7 @@
                   }"
                   class="nav-link"
                   (click)="setListTo('ALL')"
-                  >Articles</a
+                >Articles</a
                 >
               </li>
               <li class="nav-item" [hidden]="!model.listConfig.filters.tag">
@@ -48,11 +48,12 @@
 
       <div class="col-md-3">
         <div class="sidebar">
-          @defer (when !!(tags$ | async)?.length) {
-            <cdt-tags-list [tags]="(tags$ | async) ?? []" [selectedTag]="$listConfig().filters.tag" (select)="setListTag($event)"></cdt-tags-list>
-          } @placeholder {
-            loading...
-          }
+          <cdt-tags-list
+            [tags]="(tags$ | async) ?? []"
+            [selectedTag]="$listConfig().filters.tag"
+            [isLoading]="isLoading$ | async"
+            (select)="setListTag($event)">
+          </cdt-tags-list>
         </div>
       </div>
     </div>
