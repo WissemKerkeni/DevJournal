@@ -76,5 +76,18 @@ export class AppComponent implements OnInit {
     // this.webSocketService.onEvent('comments').subscribe((comments) => {
     //   console.log('Received comments:', comments);
     // });
+
+    // like-unlike
+    this.webSocketService.onEvent<Article>('like-unlike').subscribe((article) => {
+      if (!this.authStore.loggedIn()) {
+        return;
+      }
+      console.log('Received like-unlike:', article);
+      this.articlesListStore.updateArticle(article);
+    });
+
+    this.webSocketService.onEvent('disconnect').subscribe(() => {
+      console.log('Disconnected from Socket.IO server');
+    });
   }
 }
